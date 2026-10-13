@@ -1,19 +1,27 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import logoImg from '../assets/logo.png';
 
 const navItems = [
-  { name: 'TRANG CHỦ', path: '/home', active: true },
+  { name: 'TRANG CHỦ', path: '/home' },
   { name: 'VỀ CHÚNG TÔI', path: '#', hasDropdown: true },
   { name: 'KHÓA HỌC', path: '#courses-section', hasDropdown: true },
-  { name: 'HUẤN LUYỆN VIÊN', path: '#coaches-section' },
-  { name: 'CƠ SỞ VẬT CHẤT', path: '#facilities-section' },
+  { name: 'HUẤN LUYỆN VIÊN', path: '/hlv' },
+  { name: 'CƠ SỞ VẬT CHẤT', path: '/co-so-vat-chat' },
   { name: 'TUYỂN SINH', path: '#' },
 ];
 
-export default function Header() {
-  const [isHeaderTransparent, setIsHeaderTransparent] = useState(true);
+export default function Header({ forceWhite = false }) {
+  const [isHeaderTransparent, setIsHeaderTransparent] = useState(!forceWhite);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
+    if (forceWhite) {
+      setIsHeaderTransparent(false);
+      return;
+    }
+
     const handleScroll = () => {
       const scrollY = window.scrollY;
       const coursesElem = document.getElementById('courses-section');
@@ -25,23 +33,25 @@ export default function Header() {
         return rect.top <= 100 && rect.bottom >= 100;
       };
 
-      // Trong suốt ở Hero Banner, CoursesSection và CoachesSection
       if (scrollY <= 50 || isInside(coursesElem) || isInside(coachesElem)) {
         setIsHeaderTransparent(true);
       } else {
-        // Chuyển nền trắng cho FacilitiesSection và các phần còn lại
         setIsHeaderTransparent(false);
       }
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [forceWhite]);
 
-  const handleHardReloadHome = (e, path) => {
-    if (path === '/home') {
+  // Xử lý click: Đảm bảo reload page cứng khi bấm Cơ sở vật chất hoặc Trang chủ
+  const handleNavClick = (e, path) => {
+    if (path === '/home' || path === '/co-so-vat-chat') {
       e.preventDefault();
-      window.location.href = '/home';
+      window.location.href = path; // Reload cứng lại toàn bộ trang
+    } else if (path.startsWith('/')) {
+      e.preventDefault();
+      navigate(path);
     }
   };
 
@@ -54,9 +64,10 @@ export default function Header() {
       }`}
     >
       <div className="flex items-center justify-between w-full px-6 md:px-12 mx-auto">
+        {/* LOGO */}
         <a
           href="/home"
-          onClick={(e) => handleHardReloadHome(e, '/home')}
+          onClick={(e) => handleNavClick(e, '/home')}
           className="flex items-center space-x-2.5 cursor-pointer group shrink-0"
         >
           <img
@@ -80,48 +91,49 @@ export default function Header() {
           </div>
         </a>
 
+        {/* MENU ĐIỀU HƯỚNG */}
         <nav className="hidden lg:flex items-center space-x-1 xl:space-x-2">
-          {navItems.map((item, index) => (
-            <a
-              key={index}
-              href={item.path}
-              onClick={(e) => handleHardReloadHome(e, item.path)}
-              className={`group relative overflow-hidden px-3.5 py-2 text-xs xl:text-sm font-bold tracking-wider transition-colors duration-300 whitespace-nowrap ${
-                isHeaderTransparent
-                  ? 'text-white/90 hover:text-white'
-                  : item.active
-                  ? 'text-[#e31b23]'
-                  : 'text-gray-800 hover:text-[#e31b23]'
-              }`}
-            >
-              {isHeaderTransparent && (
-                <span
-                  className={`absolute inset-0 bg-[#e31b23] transition-transform duration-300 ease-out origin-left -z-10 ${
-                    item.active ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
-                  }`}
-                ></span>
-              )}
+          {navItems.map((item, index) => {
+            const isActive = location.pathname === item.path;
 
-              <span className="relative z-10 flex items-center gap-1">
-                {item.name}
-                {item.hasDropdown && (
-                  <svg
-                    className="w-3 h-3 transition-transform duration-200 group-hover:translate-y-0.5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2.5"
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
+            return (
+              <a
+                key={index}
+                href={item.path}
+                onClick={(e) => handleNavClick(e, item.path)}
+                className={`group relative overflow-hidden px-3.5 py-2 text-xs xl:text-sm font-bold tracking-wider transition-colors duration-300 whitespace-nowrap ${
+                  isActive
+                    ? 'bg-[#e31b23] text-white shadow-md'
+                    : isHeaderTransparent
+                    ? 'text-white/90 hover:text-white'
+                    : 'text-gray-800 hover:text-[#e31b23]'
+                }`}
+              >
+                {!isActive && isHeaderTransparent && (
+                  <span className="absolute inset-0 bg-[#e31b23] transition-transform duration-300 ease-out origin-left -z-10 scale-x-0 group-hover:scale-x-100"></span>
                 )}
-              </span>
-            </a>
-          ))}
+
+                <span className="relative z-10 flex items-center gap-1">
+                  {item.name}
+                  {item.hasDropdown && (
+                    <svg
+                      className="w-3 h-3 transition-transform duration-200 group-hover:translate-y-0.5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2.5"
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  )}
+                </span>
+              </a>
+            );
+          })}
         </nav>
       </div>
     </header>
