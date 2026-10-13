@@ -6,7 +6,8 @@ import SportsTicker from '../components/SportsTicker';
 import AboutSection from '../components/AboutSection';
 import CoursesSection from '../components/CoursesSection';
 import CoachesSection from '../components/CoachesSection';
-import FacilitiesSection from '../components/FacilitiesSection'; // Component mới
+import FacilitiesSection from '../components/FacilitiesSection';
+import Footer from '../components/Footer'; // Import Footer
 
 export default function HomePage() {
   return (
@@ -34,6 +35,9 @@ export default function HomePage() {
 
       {/* 7. CƠ SỞ VẬT CHẤT */}
       <FacilitiesSection />
+
+      {/* 8. FOOTER & FORM TƯ VẤN GHI DANH */}
+      <Footer />
     </div>
   );
 }
