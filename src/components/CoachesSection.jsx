@@ -1,32 +1,26 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-// Import chính xác 11 file ảnh HLV tương ứng
-import coachSwimming from '../assets/coachs/coach-swimming.webp';
-import coachTableTennis from '../assets/coachs/coach-tabletennis-683x1024.webp';
-import coachVolleyball from '../assets/coachs/coach-volleyball-873x1024.webp';
-import coachSoccer from '../assets/coachs/coach-soccer-683x1024.webp';
+// Import chính xác 8 file ảnh HLV tương ứng với 8 bộ môn
 import coachBasketball from '../assets/coachs/coach-basketball.webp';
-import coachBadminton from '../assets/coachs/coach-badminton.webp';
-import coachChess from '../assets/coachs/coach-chess.webp';
+import coachSwimming from '../assets/coachs/coach-swimming.webp';
 import coachGolf from '../assets/coachs/coach-golf.webp';
-import coachFencing from '../assets/coachs/coach-fencing-1-1-683x1024.png';
 import coachTennis from '../assets/coachs/coach-tennis-687x1024.webp';
+import coachTableTennis from '../assets/coachs/coach-tabletennis-683x1024.webp';
+import coachBadminton from '../assets/coachs/coach-badminton.webp';
 import coachTaekwondo from '../assets/coachs/coach-taekwondo-683x1024.webp';
+import coachSoccer from '../assets/coachs/coach-soccer-683x1024.webp';
 
-// Danh sách chuẩn 11 HLV (Đã loại bỏ Nhảy hiện đại)
+// Danh sách 8 HLV đại diện cho 8 bộ môn thể thao chủ đạo
 const coachesData = [
-  { id: 1, sport: 'BƠI LỘI', name: 'NGUYỄN THỊ ÁNH VIÊN', img: coachSwimming },
-  { id: 2, sport: 'BÓNG BÀN', name: 'PHAN HOÀNG ĐĂNG', img: coachTableTennis },
-  { id: 3, sport: 'BÓNG CHUYỀN', name: 'LEONID GRITSAI', img: coachVolleyball },
-  { id: 4, sport: 'BÓNG ĐÁ', name: 'LÊ ĐÌNH TRỌNG', img: coachSoccer },
-  { id: 5, sport: 'BÓNG RỔ', name: 'PAUL VILLANOVA', img: coachBasketball },
+  { id: 1, sport: 'BÓNG RỔ', name: 'PAUL VILLANOVA', img: coachBasketball },
+  { id: 2, sport: 'BƠI LỘI', name: 'NGUYỄN THỊ ÁNH VIÊN', img: coachSwimming },
+  { id: 3, sport: 'GOLF 3D', name: 'NGÔ BẢO NGHI', img: coachGolf },
+  { id: 4, sport: 'QUẦN VỢT', name: 'NGUYỄN TÔN NHUẬN', img: coachTennis },
+  { id: 5, sport: 'BÓNG BÀN', name: 'PHAN HOÀNG ĐĂNG', img: coachTableTennis },
   { id: 6, sport: 'CẦU LÔNG', name: 'HUỲNH TRÍ THỊNH', img: coachBadminton },
-  { id: 7, sport: 'CỜ VUA', name: 'TỪ HOÀNG THÔNG', img: coachChess },
-  { id: 8, sport: 'GOLF 3D', name: 'NGÔ BẢO NGHI', img: coachGolf },
-  { id: 9, sport: 'KIẾM THUẬT', name: 'JOSHUA PAUNIL', img: coachFencing },
-  { id: 10, sport: 'QUẦN VỢT', name: 'NGUYỄN TÔN NHUẬN', img: coachTennis },
-  { id: 11, sport: 'TAEKWONDO', name: 'PHAN THỊ THÚY HẰNG', img: coachTaekwondo },
+  { id: 7, sport: 'TAEKWONDO', name: 'PHAN THỊ THÚY HẰNG', img: coachTaekwondo },
+  { id: 8, sport: 'BÓNG ĐÁ', name: 'LÊ ĐÌNH TRỌNG', img: coachSoccer },
 ];
 
 export default function CoachesSection() {
@@ -57,7 +51,7 @@ export default function CoachesSection() {
     };
   }, []);
 
-  // Tự động chuyển slide liên tục mỗi 3.5 giây (luôn chạy, không dừng khi rê chuột)
+  // Tự động chuyển slide liên tục mỗi 3.5 giây
   useEffect(() => {
     const interval = setInterval(() => {
       handleNext();
@@ -80,7 +74,7 @@ export default function CoachesSection() {
     <section
       ref={sectionRef}
       id="coaches-section"
-      className="relative w-full bg-[#12141d] py-16 md:py-24 overflow-hidden text-white select-none"
+      className="relative w-full bg-[#12141d] py-16 md:py-24 overflow-hidden text-white select-none font-sans"
     >
       {/* TIÊU ĐỀ SECTION */}
       <div
@@ -113,7 +107,7 @@ export default function CoachesSection() {
           </svg>
         </button>
 
-        {/* CONTAINER CHỨA THẺ HLV TRÀN BÊN PHẢI */}
+        {/* CONTAINER CHỨA THẺ HLV */}
         <div className="overflow-hidden w-full py-4">
           <div
             className="flex transition-transform duration-700 ease-in-out gap-4 sm:gap-5 md:gap-6"
@@ -126,7 +120,7 @@ export default function CoachesSection() {
                 key={`${coach.id}-${index}`}
                 className="group relative flex-none w-[240px] sm:w-[250px] md:w-[260px] h-[380px] sm:h-[420px] md:h-[460px] rounded-sm overflow-hidden bg-gradient-to-b from-[#e31b23] via-[#b51219] to-[#3a0306] border border-red-900/30 shadow-2xl transition-all duration-300 hover:scale-[1.04] hover:z-20 cursor-pointer flex flex-col justify-end"
               >
-                {/* Ảnh HLV tách nền ở giữa */}
+                {/* Ảnh HLV */}
                 <div className="absolute inset-0 flex items-end justify-center overflow-hidden">
                   <img
                     src={coach.img}
@@ -164,7 +158,7 @@ export default function CoachesSection() {
           </svg>
         </button>
 
-        {/* DẢI CHẤM INDICATOR BÊN DƯỚI */}
+        {/* DẢI CHẤM INDICATOR */}
         <div className="flex justify-center items-center space-x-2 mt-8 md:mt-10">
           {coachesData.map((_, idx) => (
             <button
@@ -181,7 +175,7 @@ export default function CoachesSection() {
         </div>
       </div>
 
-      {/* NÚT "XEM THÊM" SANG /hlv */}
+      {/* NÚT XEM THÊM */}
       <div
         className={`flex justify-center mt-8 md:mt-12 transition-all duration-1000 delay-300 ease-out ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'

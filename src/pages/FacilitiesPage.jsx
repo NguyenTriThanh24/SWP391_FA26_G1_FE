@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import Header from '../components/Header';
 import FacilityTourSection from '../components/FacilityTourSection';
 import FacilityListSection from '../components/FacilityListSection';
+import MapSection from '../components/MapSection'; // Import thêm MapSection
 import Footer from '../components/Footer';
 
 import arenaImg from '../assets/facilities/facility-arena-1024x683.webp';
@@ -59,7 +60,6 @@ export default function FacilitiesPage() {
     window.scrollTo(0, 0);
   }, []);
 
-  // Hàm cuộn mượt lên vị trí Form Đăng ký tham quan
   const handleScrollToForm = () => {
     if (formRef.current) {
       formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -154,13 +154,16 @@ export default function FacilitiesPage() {
         </div>
       </section>
 
-      {/* 3. MÀN HÌNH FORM ĐĂNG KÝ THAM QUAN */}
+      {/* 3. FORM ĐĂNG KÝ THAM QUAN */}
       <FacilityTourSection formRef={formRef} />
 
-      {/* 4. DANH SÁCH 9 KHỐI CƠ SỞ VẬT CHẤT CHI TIẾT */}
+      {/* 4. DANH SÁCH KHỐI CƠ SỞ VẬT CHẤT */}
       <FacilityListSection onRegisterClick={handleScrollToForm} />
 
-      {/* 5. FOOTER */}
+      {/* 5. BẢN ĐỒ GOOGLE MAPS (NẰM NGAY DƯỚI CÁC KHỐI CSVC VÀ TRÊN FOOTER) */}
+      <MapSection />
+
+      {/* 6. FOOTER */}
       <Footer />
     </div>
   );

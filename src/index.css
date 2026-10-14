@@ -14,8 +14,3 @@
   width: max-content;
   animation: marquee 20s linear infinite;
 }
-
-/* Tạm dừng chạy khi rê chuột vào dải màu đỏ (Tùy chọn) */
-.animate-marquee:hover {
-  animation-play-state: paused;
-}
