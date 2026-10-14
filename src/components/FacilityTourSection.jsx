@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
-export default function FacilityTourSection() {
+export default function FacilityTourSection({ formRef }) {
+  const sectionRef = useRef(null);
   const [formData, setFormData] = useState({
     fullName: '',
     phone: '',
@@ -13,6 +14,25 @@ export default function FacilityTourSection() {
   const [errors, setErrors] = useState({});
   const [isSuccess, setIsSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  // Observer cho hiệu ứng Fade-In-Up
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('opacity-100', 'translate-y-0');
+          entry.target.classList.remove('opacity-0', 'translate-y-12');
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   // Lọc số điện thoại
   const handlePhoneChange = (e) => {
@@ -53,7 +73,10 @@ export default function FacilityTourSection() {
   };
 
   return (
-    <section className="relative w-full bg-white py-16 md:py-24 text-gray-900 font-sans select-none overflow-hidden">
+    <section
+      ref={sectionRef}
+      className="opacity-0 translate-y-12 transition-all duration-700 ease-out relative w-full bg-white py-16 md:py-24 text-gray-900 font-sans select-none overflow-hidden"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* TIÊU ĐỀ SECTION */}
@@ -68,14 +91,14 @@ export default function FacilityTourSection() {
           </p>
         </div>
 
-        {/* CARD BỐ CỤC 2 CỘT CHUẨN XÁC NGHỆ THUẬT MẪU */}
-        <div className="w-full bg-[#12151e] shadow-2xl rounded-sm overflow-hidden flex flex-col lg:flex-row border border-gray-800/80">
-          
-          {/* ================= CỘT TRÁI: ĐĂNG KÝ THAM QUAN (NỀN ĐEN #12151e) ================= */}
+        {/* CARD BỐ CỤC 2 CỘT */}
+        <div
+          ref={formRef}
+          className="w-full bg-[#12151e] shadow-2xl rounded-sm overflow-hidden flex flex-col lg:flex-row border border-gray-800/80 scroll-mt-28"
+        >
+          {/* CỘT TRÁI: ĐĂNG KÝ THAM QUAN */}
           <div className="w-full lg:w-[45%] p-6 sm:p-10 md:p-11 text-white flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-gray-800 relative">
-            
             <div>
-              {/* TAG FACILITY TOUR */}
               <div className="inline-flex items-center space-x-2 bg-[#1b202e] border border-gray-700/60 px-3 py-1.5 rounded-sm mb-6">
                 <svg className="w-4 h-4 text-[#e31b23]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -85,7 +108,6 @@ export default function FacilityTourSection() {
                 </span>
               </div>
 
-              {/* TIÊU ĐỀ CỘT */}
               <h3 className="text-3xl sm:text-4xl font-black uppercase tracking-tight mb-3">
                 ĐĂNG KÝ <span className="text-[#e31b23]">THAM QUAN</span>
               </h3>
@@ -94,9 +116,7 @@ export default function FacilityTourSection() {
                 Lên lịch khảo sát trực tiếp với đội ngũ AnhDuy Sport để xem mặt bằng, kiểm tra luồng di chuyển và chọn khu vực phù hợp cho lớp học, giải đấu hoặc sự kiện.
               </p>
 
-              {/* 3 THẺ THÔNG TIN NỔI BẬT NỀN TỐI VÀ ICON ĐỎ BÓNG THANH THOÁT */}
               <div className="space-y-3 mb-8">
-                {/* 1. THỜI LƯỢNG */}
                 <div className="bg-[#181d2a] p-3 flex items-center space-x-3.5 rounded-sm">
                   <div className="w-10 h-10 rounded bg-[#e31b23] flex items-center justify-center shrink-0">
                     <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -113,7 +133,6 @@ export default function FacilityTourSection() {
                   </div>
                 </div>
 
-                {/* 2. QUY MÔ GỢI Ý */}
                 <div className="bg-[#181d2a] p-3 flex items-center space-x-3.5 rounded-sm">
                   <div className="w-10 h-10 rounded bg-[#e31b23] flex items-center justify-center shrink-0">
                     <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -130,7 +149,6 @@ export default function FacilityTourSection() {
                   </div>
                 </div>
 
-                {/* 3. ĐIỂM HẸN */}
                 <div className="bg-[#181d2a] p-3 flex items-center space-x-3.5 rounded-sm">
                   <div className="w-10 h-10 rounded bg-[#e31b23] flex items-center justify-center shrink-0">
                     <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -149,7 +167,6 @@ export default function FacilityTourSection() {
                 </div>
               </div>
 
-              {/* DẢI 3 ƯU ĐIỂM */}
               <div className="pt-6 border-t border-gray-800 space-y-3.5">
                 <div className="flex items-start space-x-3">
                   <div className="w-4 h-4 rounded-full border border-[#e31b23] flex items-center justify-center shrink-0 mt-0.5 text-[#e31b23]">
@@ -185,12 +202,10 @@ export default function FacilityTourSection() {
                 </div>
               </div>
             </div>
-
           </div>
 
-          {/* ================= CỘT PHẢI: FORM CHỌN NGÀY PHÙ HỢP (NỀN TRẮNG) ================= */}
+          {/* CỘT PHẢI: FORM CHỌN NGÀY PHÙ HỢP */}
           <div className="w-full lg:w-[55%] bg-white p-6 sm:p-10 md:p-11 flex flex-col justify-center">
-            
             <div className="mb-6">
               <span className="text-[11px] font-black text-[#e31b23] uppercase tracking-widest block mb-1">
                 GỬI THÔNG TIN LỊCH HẸN
@@ -223,8 +238,6 @@ export default function FacilityTourSection() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} noValidate className="space-y-4">
-                
-                {/* HÀNG 1: HỌ VÀ TÊN - SỐ ĐIỆN THOẠI */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-[11px] font-black uppercase text-gray-700 mb-1">
@@ -260,7 +273,6 @@ export default function FacilityTourSection() {
                   </div>
                 </div>
 
-                {/* HÀNG 2: EMAIL (ĐÃ XÓA DẤU * BẮT BUỘC) */}
                 <div>
                   <label className="block text-[11px] font-black uppercase text-gray-700 mb-1">
                     EMAIL
@@ -274,7 +286,6 @@ export default function FacilityTourSection() {
                   />
                 </div>
 
-                {/* HÀNG 3: NGÀY DỰ KIẾN - SỐ LƯỢNG */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-[11px] font-black uppercase text-gray-700 mb-1">
@@ -302,7 +313,6 @@ export default function FacilityTourSection() {
                   </div>
                 </div>
 
-                {/* HÀNG 4: NHU CẦU THAM QUAN */}
                 <div>
                   <label className="block text-[11px] font-black uppercase text-gray-700 mb-1">
                     NHU CẦU THAM QUAN
@@ -316,7 +326,6 @@ export default function FacilityTourSection() {
                   ></textarea>
                 </div>
 
-                {/* NÚT GỬI ĐĂNG KÝ THAM QUAN */}
                 <div className="pt-2">
                   <button
                     type="submit"
@@ -345,14 +354,10 @@ export default function FacilityTourSection() {
                     </span>
                   </button>
                 </div>
-
               </form>
             )}
-
           </div>
-
         </div>
-
       </div>
     </section>
   );

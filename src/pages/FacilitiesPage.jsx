@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Header from '../components/Header';
-import FacilityTourSection from '../components/FacilityTourSection'; // Component mới tạo
+import FacilityTourSection from '../components/FacilityTourSection';
+import FacilityListSection from '../components/FacilityListSection';
 import Footer from '../components/Footer';
 
 import arenaImg from '../assets/facilities/facility-arena-1024x683.webp';
@@ -51,31 +52,34 @@ const statsData = [
 
 export default function FacilitiesPage() {
   const [hoveredId, setHoveredId] = useState(null);
+  const formRef = useRef(null);
 
   useEffect(() => {
+    document.title = "AnhDuy Sport - Trung tâm thể thao AnhDuy Sport";
     window.scrollTo(0, 0);
   }, []);
 
+  // Hàm cuộn mượt lên vị trí Form Đăng ký tham quan
+  const handleScrollToForm = () => {
+    if (formRef.current) {
+      formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   return (
     <div className="relative w-full min-h-screen font-sans bg-[#12141d] text-white select-none overflow-x-hidden">
-      {/* 1. HEADER LUÔN NỀN TRẮNG */}
+      {/* 1. HEADER */}
       <Header forceWhite />
 
-      {/* 2. HERO BANNER FULL MÀN HÌNH (h-screen) */}
+      {/* 2. HERO BANNER FULL MÀN HÌNH */}
       <section className="relative w-full h-screen pt-16 bg-[#0d0f17] overflow-hidden flex flex-col justify-between">
-        
-        {/* KHỐI ẢNH NỀN VÀ OVERLAY */}
         <div className="absolute inset-0 z-0">
           <img
             src={arenaImg}
             alt="AnhDuy Sport Center Arena"
             className="w-full h-full object-cover object-center filter brightness-[0.7] contrast-[1.05]"
           />
-
-          {/* Phủ tối bên trái */}
           <div className="absolute inset-y-0 left-0 w-full lg:w-[60%] bg-gradient-to-r from-black/85 via-black/50 to-transparent"></div>
-
-          {/* Mảng vát chéo màu đỏ bên phải */}
           <div
             className="absolute inset-y-0 right-0 w-full lg:w-[55%] bg-[#e31b23]/35 mix-blend-multiply pointer-events-none"
             style={{
@@ -84,9 +88,7 @@ export default function FacilitiesPage() {
           ></div>
         </div>
 
-        {/* NỘI DUNG CHÍNH HERO BANNER */}
         <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-12 lg:px-16 my-auto pt-8">
-          {/* Tag đỏ nghiêng */}
           <div className="mb-3">
             <span className="inline-block bg-[#e31b23] text-white font-black text-xs sm:text-sm px-3.5 py-1 transform -skew-x-12 uppercase tracking-widest shadow-md">
               <span className="inline-block transform skew-x-12">
@@ -95,18 +97,16 @@ export default function FacilitiesPage() {
             </span>
           </div>
 
-          {/* Tiêu đề CƠ SỞ VẬT CHẤT */}
           <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white uppercase tracking-tight leading-none drop-shadow-2xl mb-5">
             CƠ SỞ <span className="text-[#e31b23]">VẬT CHẤT</span>
           </h1>
 
-          {/* Mô tả */}
           <p className="max-w-xl text-gray-100 text-sm sm:text-base md:text-lg font-semibold leading-relaxed drop-shadow-md border-l-4 border-[#e31b23] pl-4">
             Hệ thống cơ sở vật chất đẳng cấp quốc tế, đáp ứng mọi nhu cầu tập luyện, thi đấu và tổ chức sự kiện thể thao chuyên nghiệp.
           </p>
         </div>
 
-        {/* 3. DẢI 4 BLOCK THỐNG KÊ ĐẶT SÁT ĐÁY MÀN HÌNH HERO */}
+        {/* DẢI 4 BLOCK THỐNG KÊ */}
         <div className="relative z-20 w-full bg-[#0d0f17] py-6 px-4 sm:px-8 border-t border-gray-800/80 shrink-0">
           <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5">
             {statsData.map((stat) => {
@@ -123,7 +123,6 @@ export default function FacilitiesPage() {
                       : 'bg-[#181d2a] text-gray-200'
                   }`}
                 >
-                  {/* Cột Icon */}
                   <div
                     className={`p-3 sm:p-3.5 flex items-center justify-center shrink-0 border-r transition-colors duration-300 ${
                       isHovered
@@ -134,7 +133,6 @@ export default function FacilitiesPage() {
                     <div className="transform skew-x-12">{stat.icon}</div>
                   </div>
 
-                  {/* Cột thông số */}
                   <div className="p-3 sm:p-3.5 flex flex-col justify-center flex-1">
                     <div className="transform skew-x-12">
                       <span
@@ -156,8 +154,11 @@ export default function FacilitiesPage() {
         </div>
       </section>
 
-      {/* 4. MÀN HÌNH KHÔNG GIAN TẬP LUYỆN & THI ĐẤU (NẰM Ở GIỮA) */}
-      <FacilityTourSection />
+      {/* 3. MÀN HÌNH FORM ĐĂNG KÝ THAM QUAN */}
+      <FacilityTourSection formRef={formRef} />
+
+      {/* 4. DANH SÁCH 9 KHỐI CƠ SỞ VẬT CHẤT CHI TIẾT */}
+      <FacilityListSection onRegisterClick={handleScrollToForm} />
 
       {/* 5. FOOTER */}
       <Footer />
